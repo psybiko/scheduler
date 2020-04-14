@@ -14,8 +14,8 @@ export default function DayListItem(props) {
 
   let dayClass = classNames({
     'day-list__item': true,
-   'day-list__item--selected': props.selected === true,
-   'day-list__item--full': props.spots === 0
+    'day-list__item--selected': props.selected === true,
+    'day-list__item--full': props.spots === 0
  });
 
   return (
