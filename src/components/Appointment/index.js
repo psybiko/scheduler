@@ -6,8 +6,6 @@ import Header from "./Header";
 import Show from "./Show";
 import Empty from "./Empty";
 
-// All Appointment components will render a Header that takes in a time prop.
-// If props.interview is truthy (an interview object) the Appointment will render the <Show /> component, else it should render the <Empty /> component.
 
 export default function Appointment(props) {
   return (
