@@ -10,6 +10,14 @@ import DayListItem from "components/DayListItem";
 import DayList from "components/DayList";
 import InterviewerListItem from "components/InterviewerListItem";
 import InterviewerList from "components/InterviewerList";
+import Appointment from "components/Appointment";
+import Header from "components/Appointment/Header";
+import Empty from "components/Appointment/Empty";
+import Show from "components/Appointment/Show";
+import Confirm from "components/Appointment/Confirm";
+import Status from "components/Appointment/Status";
+import Error from "components/Appointment/Error";
+import Form from "components/Appointment/Form";
 
 
 storiesOf("Button", module)
@@ -103,6 +111,7 @@ storiesOf("Button", module)
           setInterviewer={event => action("setInterviewer")(interviewer.id)}
         />
       ));
+
 const interviewers = [
   { id: 1, name: "Sylvia Palmer", avatar: "https://i.imgur.com/LpaY82x.png" },
   { id: 2, name: "Tori Malcolm", avatar: "https://i.imgur.com/Nmx0Qxo.png" },
@@ -111,20 +120,59 @@ const interviewers = [
   { id: 5, name: "Sven Jones", avatar: "https://i.imgur.com/twYrpay.jpg" }
 ];
 
-      storiesOf("InterviewerList", module)
-        .addParameters({
-          backgrounds: [{ name: "dark", value: "#222f3e", default: true }]
-        })
-        .add("Initial", () => (
-          <InterviewerList
-            interviewers={interviewers}
-            setInterviewer={action("setInterviewer")}
-          />
-        ))
-        .add("Preselected", () => (
-          <InterviewerList
-            interviewers={interviewers}
-            interviewer={3}
-            setInterviewer={action("setInterviewer")}
-          />
-        ));
+storiesOf("InterviewerList", module)
+  .addParameters({
+    backgrounds: [{ name: "dark", value: "#222f3e", default: true }]
+  })
+  .add("Initial", () => (
+    <InterviewerList
+      interviewers={interviewers}
+      onChange={action("setInterviewer")}
+    />
+  ))
+  .add("Preselected", () => (
+    <InterviewerList
+      interviewers={interviewers}
+      value={3}
+      onChange={action("setInterviewer")}
+    />
+  ));
+
+  storiesOf("Appointment", module)
+    .addParameters({
+      backgrounds: [{ name: "white", value: "#fff", default: true}]
+    })
+    .add("Appointment", () => <Appointment />)
+    .add("Appointment", () => <Appointment time="12pm"/>)
+    .add("Header", () => <Header time="12pm"/>)
+    .add("Empty", () => <Empty onAdd={action("onAdd")} />)
+    .add("Show", () => <Show
+      student="Lydia Miller-Jones"
+      interviewer={interviewer}
+      onEdit={action("onEdit")}
+      onDelete={action("onDelete")}
+     />)
+    .add("Confirm", () => <Confirm
+      message="Delete the appointment?"
+      onConfirm={action("onConfirm")}
+      onCancel={action("onCancel")}
+    />)
+    .add("Status", () => <Status
+      message="Deleting"
+    />)
+    .add("Error", () => <Error
+      message="Could not delete appointment"
+      onClose={action("onClose")}
+    />)
+    .add("Edit", () => <Form
+      name={interviewers[0].name}
+      interviewers={interviewers}
+      interviewer={interviewers[0].id}
+      onSave={action("onSave")}
+      onCancel={action("onCancel")}
+    />)
+    .add("Create", () => <Form
+      interviewers={interviewers}
+      onSave={action("onSave")}
+      onCancel={action("onCancel")}
+    />)
