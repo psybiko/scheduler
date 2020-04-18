@@ -42,12 +42,12 @@ export default function Appointment(props) {
       )}
       {mode === CREATE && (
       <Form
-        name={props.interview && props.interview.student}
+        // name={props.interview && props.interview.student}
         // interviews array is empty because getAppointmentsForDay isn't implemented yet
-        interviewers={[]}
+        interviewers={props.interviewers}
         onSave={props.onSave}
         onCancel={onCancel}
-        interviewer={props.interview && props.interview.interviewer}
+        // interviewer={props.interview && props.interview.interviewer}
       />)}
     </article>
   )
