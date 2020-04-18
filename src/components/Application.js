@@ -34,20 +34,17 @@ export default function Application(props) {
   }, [])
 
 
-  const appointments = getAppointmentsForDay(state, state.day).map(appointment => {
-// something is wrong with my show component. might be the way i passed props
-
-    return (
-      <Appointment
-        key={appointment.id}
-        id={appointment.id}
-        time={appointment.time}
-        interview='kc'
-
-      />
+  const appointments = getAppointmentsForDay(state, state.day);
+  const schedule = appointments.map((appointment) => {
+  return (
+    <Appointment
+      key={appointment.id}
+      id={appointment.id}
+      time={appointment.time}
+      interview={appointment.interview}
+    />
     );
-    }
-  );
+  });
 
   return (
     <main className="layout">
@@ -73,8 +70,7 @@ export default function Application(props) {
         />
       </section>
       <section className="schedule">
-
-        {appointments}
+      {schedule}
        <Appointment key="last" time="5pm" />
       </section>
     </main>
