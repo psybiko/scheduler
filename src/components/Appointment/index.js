@@ -13,9 +13,6 @@ const EMPTY = "EMPTY";
 const SHOW = "SHOW";
 const CREATE = "CREATE";
 
-// The next step is to use our useVisualMode Hook. The same logic as before determines the initial mode. When props.interview contains a value, then we want to pass useVisualMode the SHOW mode, if it is empty then we should pass EMPTY.
-
-
 export default function Appointment(props) {
 
   const { mode, transition, back } = useVisualMode(
@@ -30,6 +27,16 @@ export default function Appointment(props) {
    transition(EMPTY);
  };
 
+ // Function that saves the interview
+ function save(name, interviewer) {
+   const interview = {
+     student: name,
+     interviewer
+   };
+  props.bookInterview(props.id, interview);
+  transition(SHOW);
+ }
+
   return (
     <article className="appointment">
       <Header time={props.time}/>
@@ -42,10 +49,8 @@ export default function Appointment(props) {
       )}
       {mode === CREATE && (
       <Form
-        // name={props.interview && props.interview.student}
-        // interviews array is empty because getAppointmentsForDay isn't implemented yet
         interviewers={props.interviewers}
-        onSave={props.onSave}
+        onSave={save}
         onCancel={onCancel}
         // interviewer={props.interview && props.interview.interviewer}
       />)}
