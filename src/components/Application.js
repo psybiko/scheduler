@@ -33,6 +33,29 @@ export default function Application(props) {
   }, [])
 
 
+  // Function to log values that we pass to it. In the future it will change the local state when we book an interview.
+  function bookInterview(id, interview) {
+
+    
+    const appointment = {
+      ...state.appointments[id],
+      interview: { ...interview }
+    };
+    
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
+    setState({...state, appointments})
+    
+    axios.put('http://localhost:3000/api/appointments/' + id, {interview}) 
+      .then(() => {
+        setState({...state, appointments})
+     
+      })
+
+  }
+
   const appointments = getAppointmentsForDay(state, state.day);
   const interviewers = getInterviewersByDay(state, state.day);
   const schedule = appointments.map((appointment) => {
@@ -44,6 +67,7 @@ export default function Application(props) {
       time={appointment.time}
       interview={interview}
       interviewers={interviewers}
+      bookInterview={bookInterview}
     />
     );
   });
