@@ -32,11 +32,7 @@ export default function Application(props) {
     })
   }, [])
 
-
-  // Function to log values that we pass to it. In the future it will change the local state when we book an interview.
   function bookInterview(id, interview) {
-
-    
     const appointment = {
       ...state.appointments[id],
       interview: { ...interview }
@@ -46,21 +42,16 @@ export default function Application(props) {
       ...state.appointments,
       [id]: appointment
     };
-    setState({...state, appointments})
     
-    axios.put('http://localhost:3000/api/appointments/' + id, {interview}) 
-      .then((res) => {
-        setState({...state, appointments})
-     
-      })
+    return axios.put(`http://localhost:3000/api/appointments/${id}`, {interview}) 
+      .then(
+       setState({...state, appointments})
+      )
+  };
 
-  }
-
-  function cancelInterview (id, interview) {
-
+  function cancelInterview (id) {
     const appointment = {
       ...state.appointments[id],
-      interview: {...interview}
     };
 
     const appointments = {
@@ -68,13 +59,13 @@ export default function Application(props) {
       [id]: appointment
     };
 
-    setState({...state, appointments})
-
-    axios.delete('http://localhost:3000/api/appointments/' + id)
-    .then((res) => {
+    return axios.delete(`http://localhost:3000/api/appointments/${id}`)
+    .then(
       setState({...state, appointments})
-  })
-}
+  )
+};
+
+
 
   const appointments = getAppointmentsForDay(state, state.day);
   const interviewers = getInterviewersByDay(state, state.day);
