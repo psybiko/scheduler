@@ -40,7 +40,7 @@ export default function Appointment(props) {
   // confirmation to cancel the interview
   const onConfirm = () => {
  
-    transition(CONFIRM);
+    // transition(CONFIRM);
     transition(DELETING, true);
     props.cancelInterview(props.id)
       .then(() => transition(EMPTY))
@@ -58,15 +58,20 @@ export default function Appointment(props) {
      student: name,
      interviewer
    };
-  transition(SAVING);
-  props.bookInterview(props.id, interview)
-   .then(() => transition(SHOW))
-   .catch(() => transition(ERROR_SAVE, true));
+ 
+   transition(SAVING);
+ 
+   props
+     .bookInterview(props.id, interview)
+     .then(() => transition(SHOW))
+     .catch(error => transition(ERROR_SAVE, true));
  }
+
 
  const edit = () => {
   transition(EDIT)
 };
+
 
   return (
     <article className="appointment">
