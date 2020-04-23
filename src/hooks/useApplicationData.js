@@ -14,7 +14,15 @@ export default function useApplicationData(
   });
   
     const setDay = day => setState(state => ({ ...state, day }));
+
+    const remainingSpots = (day, appointments) =>
+    day.appointments.length -
+    day.appointments.reduce(
+      (spots, id) => (appointments[id].interview ? spots + 1 : spots),
+      0
+    );
   
+
     useEffect(()=>{
       Promise.all([
         axios.get('http://localhost:3000/api/days'),
@@ -40,10 +48,17 @@ export default function useApplicationData(
         ...state.appointments,
         [id]: appointment
       };
-      
+
+      const days = state.days.map((day) => {
+        if (day.appointments[id]) {
+          return { ...day, spots: remainingSpots(day, appointments) };
+        }
+        return day;
+      });
+    
       return axios.put(`http://localhost:3000/api/appointments/${id}`, {interview}) 
         .then(
-         setState({...state, appointments})
+         setState({...state, appointments, days})
         )
     };
   
@@ -56,13 +71,21 @@ export default function useApplicationData(
         ...state.appointments,
         [id]: appointment
       };
+
+      const days = state.days.map((day) => {
+        if (day.appointments[id]) {
+          return { ...day, spots: remainingSpots(day, appointments) };
+        }
+        return day;
+      });
+      
   
       return axios.delete(`http://localhost:3000/api/appointments/${id}`)
       .then(
-        setState({...state, appointments})
+        setState({...state, appointments,days})
     )
   };
 
   return {state, setDay, bookInterview, cancelInterview}
-  
+
 }
