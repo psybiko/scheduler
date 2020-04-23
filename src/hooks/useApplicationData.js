@@ -2,9 +2,7 @@ import { useState, useEffect } from "react";
 import axios from 'axios';
 
 
-export default function useApplicationData(
-
-) {
+export default function useApplicationData() {
 
   const [state, setState] = useState({
     day: "Monday",
@@ -15,13 +13,6 @@ export default function useApplicationData(
   
     const setDay = day => setState(state => ({ ...state, day }));
 
-    const remainingSpots = (day, appointments) =>
-    day.appointments.length -
-    day.appointments.reduce(
-      (spots, id) => (appointments[id].interview ? spots + 1 : spots),
-      0
-    );
-  
 
     useEffect(()=>{
       Promise.all([
@@ -37,7 +28,7 @@ export default function useApplicationData(
         }));
       })
     }, [])
-  
+
     function bookInterview(id, interview) {
       const appointment = {
         ...state.appointments[id],
@@ -49,16 +40,16 @@ export default function useApplicationData(
         [id]: appointment
       };
 
-      const days = state.days.map((day) => {
-        if (day.appointments[id]) {
-          return { ...day, spots: remainingSpots(day, appointments) };
+      const spotsRemaining = state.days.forEach(day => {
+        if (day.name === state.day) {
+          day.spots--;
         }
         return day;
-      });
+      })
     
       return axios.put(`http://localhost:3000/api/appointments/${id}`, {interview}) 
         .then(
-         setState({...state, appointments, days})
+         setState({...state, appointments})
         )
     };
   
@@ -72,17 +63,16 @@ export default function useApplicationData(
         [id]: appointment
       };
 
-      const days = state.days.map((day) => {
-        if (day.appointments[id]) {
-          return { ...day, spots: remainingSpots(day, appointments) };
+      const spotsRemaining = state.days.forEach(day => {
+        if (day.name === state.day) {
+          day.spots++;
         }
         return day;
-      });
-      
+      })
   
       return axios.delete(`http://localhost:3000/api/appointments/${id}`)
       .then(
-        setState({...state, appointments,days})
+        setState({...state, appointments})
     )
   };
 
