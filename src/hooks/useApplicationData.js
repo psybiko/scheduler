@@ -41,7 +41,7 @@ export default function useApplicationData() {
       };
 
       const spotsRemaining = state.days.forEach(day => {
-        if (day.name === state.day) {
+        if (state.appointments[id].interview === null &&  day.name === state.day) {
           day.spots--;
         }
         return day;
@@ -64,7 +64,7 @@ export default function useApplicationData() {
       };
 
       const spotsRemaining = state.days.forEach(day => {
-        if (day.name === state.day) {
+        if (state.appointments[id].interview === null && day.name === state.day) {
           day.spots++;
         }
         return day;
