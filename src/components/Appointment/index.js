@@ -40,7 +40,6 @@ export default function Appointment(props) {
   // confirmation to cancel the interview
   const onConfirm = () => {
  
-    // transition(CONFIRM);
     transition(DELETING, true);
     props.cancelInterview(props.id)
       .then(() => transition(EMPTY))
@@ -53,7 +52,7 @@ export default function Appointment(props) {
   };
 
  // Function that saves the interview
- function save(name, interviewer) {
+ const save = (name, interviewer) => {
    const interview = {
      student: name,
      interviewer
